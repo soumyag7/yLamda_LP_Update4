@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { LeadFormData } from '../types';
 import { ShieldCheck, Zap, Users, Loader2 } from 'lucide-react';
 
-const SCRIPT_URL = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxkkPcqGDbsk6tB_jbljWj4h25AC865zQXNgZ2LIWiEoqkz-wXe5K-wMtUn4sxns_T5JA/exec';
 
 interface HeroProps {
   onNavigate: (view: string) => void;
@@ -24,19 +24,37 @@ const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
     setStatus('submitting');
 
     try {
-      if (SCRIPT_URL.includes('YOUR_SCRIPT_ID')) {
-        await new Promise(resolve => setTimeout(resolve, 1200));
-        console.warn("Form submitted to placeholder. Redirecting to Thank You page for demo.");
-      } else {
-        await fetch(SCRIPT_URL, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(formData)
-        });
-      }
+      // Format data correctly for Google Sheets
+      const params = new URLSearchParams({
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        industry: formData.industry
+      });
+
+      // Send to Google Sheets
+      await fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        body: params
+      });
+
+      // Show success status
+      setStatus('success');
       
-      onNavigate('thank-you');
+      // Reset form
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        industry: ''
+      });
+
+      // Redirect to thank you page after 1.5 seconds
+      setTimeout(() => {
+        onNavigate('thank-you');
+      }, 1500);
+
     } catch (error) {
       console.error("Submission error:", error);
       setStatus('error');
