@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { LeadFormData } from '../types';
 import { ShieldCheck, Zap, Users, Loader2 } from 'lucide-react';
 
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxkkPcqGDbsk6tB_jbljWj4h25AC865zQXNgZ2LIWiEoqkz-wXe5K-wMtUn4sxns_T5JA/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyGld7AApOCgyaQCkFKTaYyYV6E7LlNyLkQdITrST5YzR1F4Zb0Ebxqbk2eEd63OwBiuw/exec';
 
 interface HeroProps {
   onNavigate: (view: string) => void;
